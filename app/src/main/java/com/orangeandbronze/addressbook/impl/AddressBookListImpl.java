@@ -1,3 +1,6 @@
+// Modified by Alexandra Lanorias
+// February 18, 2024
+
 package com.orangeandbronze.addressbook.impl;
 
 import com.orangeandbronze.addressbook.*;
@@ -37,17 +40,29 @@ public class AddressBookListImpl implements AddressBook {
     /**
      * Returns the number of entries in the address book.
      **/
+
+    // DONE
     @Override
     public int getSize() {
-        return 0;
+        return this.addresses.size();
     }
 
     /**
-     * Ruturns the address matching the customer ID.  Returns null if none found.
+     * Returns the address matching the customer ID.  Returns null if none found.
      **/
+
+    // DONE
     @Override
     public Address getAddressById(int customerId) {
-        return null;
+        int index = this.customerIds.indexOf(customerId);
+
+        if (index != -1 && index < this.addresses.size()) {
+            return this.addresses.get(index);
+        } 
+        
+        else {
+            return null;
+        }
     }
 
 
@@ -55,9 +70,19 @@ public class AddressBookListImpl implements AddressBook {
     /**
      * Returns all Customer IDs with the same address
      */
+
+    // DONE
     @Override
     public Collection<Integer> getCustomerIdsByAddress(final Address address) {
-        return null;
+        Collection<Integer> customerIdsWithSameAddress = new ArrayList<>();
+
+        for (int i = 0; i < this.addresses.size(); i++) {
+            if (address.equals(this.addresses.get(i))) {
+                customerIdsWithSameAddress.add(this.customerIds.get(i));
+            }
+        }
+
+        return customerIdsWithSameAddress;
     }
 
     /**
@@ -65,8 +90,16 @@ public class AddressBookListImpl implements AddressBook {
      * If the Customer ID already exists, does not proceed with the addition and returns false.
      * Otherwise, adds the Customer ID and address to the phone book and then returns true.
      */
+
+    // DONE
     @Override
     public boolean add(int customerId, Address address) {
+        if (!this.customerIds.contains(customerId)) {
+            this.customerIds.add(customerId);
+            this.addresses.add(address);
+            return true;
+        }
+
         return false;
     }
 
@@ -74,17 +107,33 @@ public class AddressBookListImpl implements AddressBook {
      * Removes the entry with the matching Customer ID from the address book.
      * If no matching entry exists, does nothing.
      */
+
+    // DONE
     @Override
     public void remove(int customerId) {
+        int index = this.customerIds.indexOf(customerId);
 
+        if (index != -1) {
+            this.customerIds.remove(index);
+            this.addresses.remove(index);
+        }
     }
 
     /**
      * If a matching Customer ID is present, changes the existing address with the new address, & returns true.
      * Otherwise, does nothing and returns false.
      */
+
+    // DONE
     @Override
     public boolean update(int customerId, Address newAddress) {
+        int index = this.customerIds.indexOf(customerId);
+
+        if (index != -1) {
+            this.addresses.set(index, newAddress);
+            return true;
+        }
+
         return false;
     }
 }

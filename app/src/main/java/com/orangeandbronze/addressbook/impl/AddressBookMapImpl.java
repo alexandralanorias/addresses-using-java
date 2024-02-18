@@ -1,3 +1,6 @@
+// Modified by Alexandra Lanorias
+// February 18, 2024
+
 package com.orangeandbronze.addressbook.impl;
 
 import com.orangeandbronze.addressbook.*;
@@ -23,25 +26,37 @@ public class AddressBookMapImpl implements AddressBook {
     /**
      * Returns the number of entries in the address book.
      **/
+
+    // DONE
     @Override
     public int getSize() {
-        return 0;
+        return this.map.size();
     }
 
     /**
      * Ruturns the address matching the customer ID.  Returns null if none found.
      **/
+
+    // DONE
     @Override
     public Address getAddressById(int customerId) {
-        return null;
+        return this.map.get(customerId);
     }
 
     /**
      * Returns all Customer IDs with the same address
      */
+
+    // DONE
     @Override
     public Collection<Integer> getCustomerIdsByAddress(Address address) {
-        return null;
+        Collection<Integer> customerIdsWithSameAddress = new ArrayList<>();
+        for (Map.Entry<Integer, Address> entry : this.map.entrySet()) {
+            if (address.equals(entry.getValue())) {
+                customerIdsWithSameAddress.add(entry.getKey());
+            }
+        }
+        return customerIdsWithSameAddress;
     }
 
     /**
@@ -49,8 +64,15 @@ public class AddressBookMapImpl implements AddressBook {
      * If the Customer ID already exists, does not proceed with the addition and returns false.
      * Otherwise, adds the Customer ID and address to the phone book and then returns true.
      */
+
+    // DONE
     @Override
     public boolean add(int customerId, Address address) {
+        if (!this.map.containsKey(customerId)) {
+            this.map.put(customerId, address);
+            return true;
+        }
+
         return false;
     }
 
@@ -58,17 +80,26 @@ public class AddressBookMapImpl implements AddressBook {
      * Removes the entry with the matching Customer ID from the address book.
      * If no matching entry exists, does nothing.
      */
+
+    // did not need to change anything???
     @Override
     public void remove(int customerId) {
-        map.remove(customerId);
+        this.map.remove(customerId);
     }
 
     /**
      * If a matching Customer ID is present, changes the existing address with the new address, & returns true.
      * Otherwise, does nothing and returns false.
      */
+
+    // DONE
     @Override
     public boolean update(int customerId, Address newAddress) {
+        if (this.map.containsKey(customerId)) {
+            this.map.put(customerId, newAddress);
+            return true;
+        }
+
         return false;
     }
 }
